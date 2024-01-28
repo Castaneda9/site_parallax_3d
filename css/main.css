@@ -1,0 +1,123 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+--index: calc(1vw + 1vh);  /* нужно для определения размеров логотипа на разных устройствах */
+--transition: 1.2s cubic-bezier(.05, .5, 0, 1);
+} 
+
+@font-face {
+    font-family: kamerik-3d;
+    src: url(/fonts/kamerik205-heavy.woff2);
+    font-weight: 900;
+}
+
+@font-face {
+    font-family: merriweather-italic-3d;
+    src: url(/fonts/merriweather-regular-italic.woff2);
+}
+
+body {
+background-color: black;
+color: #fff;
+font-family: 'Gill Sans', sans-serif;
+font-weight: 900;
+}
+
+/* работа с логотипом */
+.logo {  
+    --logo-size: calc(var(--index) * 7.8); /* определяем переменную так как она используется несколько раз */
+    width: var(--logo-size); /* задаем резиновый размер для логотипа */
+    height: var(--logo-size); /* что бы он мог расстягиваться или уменьшаться на разных экранах */
+    background-repeat: no-repeat;
+    position: absolute;
+    left: calc(50% - calc(var(--logo-size) / 2)); /* выставляем логотип ровно по середине с учетом адаптации под разные экраны */
+    top: calc(var(--index) * 2.5);
+    z-index: 1;
+}
+
+.layers {
+perspective: 999px;
+overflow: hidden;
+} /* от этого зависит 3d */
+
+.layers__container {
+    height: 100vh;
+    min-height: 500px; /*что бы текст не наползал на изображение */
+    transform-style: preserve-3d;
+    transform: rotateX(var(--move-y)) rotateY(var(--move-x));  /* движение мыши и анимация на странице */
+    /* will-change обязательно нужно указывать для включения аппаратного ускорения анимации на разных устройствах */
+    will-change: transform;
+    transition: transform var(--transition);
+}
+
+.layers__item {
+    position: absolute;
+    inset: -5.1vw; 
+    /* мы увеличиваем изображение но используем vw для оптимизации под разные экраны */
+    background-size: cover;
+    background-position: center;
+    /* flex - позволяет управлять элементами гораздо проще */
+    display: flex;
+    align-items: center; /* выравнивает по перпендикулярной оси У */
+    justify-content: center; /* Отвечает за выравнивание элементов по главной оси Х */
+    
+}
+
+.layer-1 {   /* на каждый слой мы указываем расстояние друг от друга и размеры */
+    transform: translateZ(-55px) scale(1.06);
+}
+.layer-2 {
+    transform: translateZ(80px) scale(.88);
+}
+.layer-3 {
+    transform: translateZ(180px) scale(.8);
+}
+.layer-4 {
+    transform: translateZ(190px) scale(.9);
+}
+.layer-5 {
+    transform: translateZ(270px) scale(.8);
+}
+.layer-6 {
+    transform: translateZ(380px) scale(.88);
+}
+
+.hero-content {
+text-align: center;
+font-size: calc(var(--index) * 1.7);
+margin-top: calc(var(--index) * 1.9); /* указываем расстояние между логотипом и текстом */ 
+} /* выравниваем текст по центру и делаем его размер адаптивным под разные устройства */
+
+.hero-content span {
+display: block;
+} /* что бы текст переносился по строчно */ 
+
+.hero-content p {
+font-size: calc(var(--index) * .6);
+font-style: italic;
+}
+
+.button-start {
+font-family: 'San Francisco', sans-serif;
+font-weight: 500;
+text-transform: uppercase;
+font-size: calc(var(--index) * .70);
+letter-spacing: .019vw; /* расстояние между буквами */
+padding: calc(var(--index) * .7) calc(var(--index) * 1.25); /* размер окна кнопки */
+border-radius: 10em;
+background-color: transparent; /* делает кнопку прозрачной */
+color: #fff;
+outline: none;
+cursor: pointer;
+}
+
+/* при использовании курсор поинтер интерактивность пропадает на странице, 
+нельзя ничего нажать, скопировать, взаимодейстовать,
+эту проблему решает поинтер евентс ноне */
+.layer-4, .layer-5, .layer-6 {
+    pointer-events: none;
+}
